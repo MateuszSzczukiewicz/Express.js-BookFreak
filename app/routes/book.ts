@@ -1,7 +1,7 @@
-import { Router } from "express";
+import { Router, Response, Request } from "express";
 
 export const bookRouter = Router();
 
-bookRouter.get("/books", async (req, res) => {
-  res.send("Działa!");
+bookRouter.get("/", (req: Request, res: Response) => {
+  res.send("Działaaa!");
 });

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "noImplicitAny": true,
     "preserveConstEnums": true,
     "sourceMap": true,
@@ -9,6 +10,7 @@
     "outDir" : "dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "module": "NodeNext",
     "moduleResolution": "node"
   }
 }

@@ -1,9 +1,11 @@
-import * as express from "express";
-import * as cors from "cors";
+// @ts-ignore
+import express from "express";
+// @ts-ignore
+import cors from "cors";
 import * as bodyParser from "body-parser";
 import "express-async-errors";
 import { config } from "./app/config";
-import { handleError } from "./app/utils/errors";
+import { bookRouter } from "./app/routes/book";
 
 const app = express();
 
@@ -13,8 +15,8 @@ app.use(
     origin: `http://localhost:${config.port}`,
   }),
 );
-app.use(express.json());
-app.use(handleError);
+
+app.use("/books", bookRouter);
 
 app.listen(config.port, () => {
   console.log(`Listening on http://localhost:${config.port}`);
