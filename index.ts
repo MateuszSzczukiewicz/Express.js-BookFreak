@@ -1,11 +1,10 @@
-// @ts-ignore
 import express from "express";
-// @ts-ignore
 import cors from "cors";
-import * as bodyParser from "body-parser";
+import bodyParser from "body-parser";
 import "express-async-errors";
 import { config } from "./app/config";
 import { bookRouter } from "./app/routes/book";
+import "./app/db/mongoose";
 
 const app = express();
 
