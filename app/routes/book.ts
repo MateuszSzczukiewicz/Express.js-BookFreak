@@ -1,10 +1,13 @@
-import { Router } from "express";
-import { BookRecord } from "../records/book.record";
+import express from "express";
+import { BookActions } from "../actions/bookActions";
 
-export const bookRouter = Router();
+export const bookRouter = express.Router();
 
-bookRouter.get("/", BookRecord.getAllBooks);
-bookRouter.get("/:id", BookRecord.getBook);
-bookRouter.post("/", BookRecord.saveBook);
-bookRouter.post("/:id", BookRecord.updateBook);
-bookRouter.post("/:id", BookRecord.deleteBook);
+const bookActionsInstance = new BookActions();
+
+bookRouter
+  .get("/books", BookActions.getAllBooks)
+  .get("/books/:id", BookActions.getBook)
+  .post("/books", bookActionsInstance.saveBook)
+  .put("/books/:id", bookActionsInstance.updateBook)
+  .delete("/books/:id", bookActionsInstance.deleteBook);
