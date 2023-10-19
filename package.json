@@ -1,12 +1,12 @@
 {
-  "name": "BookFreak-backend",
+  "name": "bookfreak-backend",
   "version": "1.0.0",
   "main": "index.ts",
   "author": "Mateusz Szczukiewicz <szcmat6277@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "ts-node index.ts",
-    "start:dev": "tsnd index.ts",
+    "dev": "tsnd index.ts",
     "build": "tsc",
     "test": "jest"
   },

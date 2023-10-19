@@ -9,14 +9,8 @@ import { bookRouter } from "./app/routes/book";
 const app = express();
 
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: `http://localhost:${config.port}`,
-  }),
-);
+app.use(cors());
 
 app.use("/api/", bookRouter);
 
-app.listen(config.port, () => {
-  console.log(`Listening on http://localhost:${config.port}`);
-});
+app.listen(config.port);
