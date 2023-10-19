@@ -1,53 +1,79 @@
 import { Book } from "../db/models/book";
 import { Request, Response } from "express";
+import { ObjectId } from "mongoose";
+import { BookEntity } from "../types";
 
-export class BookActions {
-  async saveBook(req: Request, res: Response) {
-    const title: string = req.body.title;
-    const author: string = req.body.author;
+export class BookActions implements BookEntity {
+  public _id: ObjectId;
+  public title: string;
+  public author: string;
 
-    let book;
+  static async saveBook(req: Request, res: Response) {
+    const { title, author } = req.body;
 
     try {
-      book = new Book({ title, author });
+      const book = new Book({ title, author });
       await book.save();
+      res.status(201).json(book);
     } catch (err) {
-      return res.status(422).json({ message: err.message });
+      res.status(422).json({ message: err.message });
     }
-
-    res.status(201).json(book);
   }
 
   static async getAllBooks(req: Request, res: Response) {
-    const doc = await Book.find({});
-
-    res.status(200).json(doc);
+    try {
+      const books = await Book.find({});
+      res.status(200).json(books);
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 
   static async getBook(req: Request, res: Response) {
-    const id: string = req.params.id;
-    const book = await Book.findOne({ _id: id });
-
-    res.status(200).json(book);
+    const id = req.params.id;
+    try {
+      const book = await Book.findOne({ _id: id });
+      if (!book) {
+        res.status(404).json({ message: "Book not found" });
+      } else {
+        res.status(200).json(book);
+      }
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 
-  async updateBook(req: Request, res: Response) {
-    const id: string = req.params.id;
-    const title: string = req.body.title;
-    const author: string = req.body.author;
+  static async updateBook(req: Request, res: Response) {
+    const id = req.params.id;
+    const { title, author } = req.body;
 
-    const book = await Book.findOne({ _id: id });
-    book.title = title;
-    book.author = author;
-    await book.save();
-
-    res.status(201).json(book);
+    try {
+      const book = await Book.findOne({ _id: id });
+      if (!book) {
+        res.status(404).json({ message: "Book not found" });
+      } else {
+        book.title = title;
+        book.author = author;
+        await book.save();
+        res.status(201).json(book);
+      }
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 
-  async deleteBook(req: Request, res: Response) {
-    const id: string = req.params.id;
-    await Book.deleteOne({ _id: id });
+  static async deleteBook(req: Request, res: Response) {
+    const id = req.params.id;
 
-    res.sendStatus(204);
+    try {
+      const result = await Book.deleteOne({ _id: id });
+      if (result.deletedCount === 0) {
+        res.status(404).json({ message: "Book not found" });
+      } else {
+        res.sendStatus(204);
+      }
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 }

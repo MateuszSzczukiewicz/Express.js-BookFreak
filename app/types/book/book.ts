@@ -5,5 +5,5 @@ export type CreateBookReq = Omit<BookEntity, "_id">;
 
 export interface GetSingleBookRes {
   book: BookEntity;
-  bookId: ObjectId;
+  _id: ObjectId;
 }
