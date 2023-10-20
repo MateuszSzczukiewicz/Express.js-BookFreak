@@ -1,19 +1,19 @@
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 interface Book {
-  title: string;
-  author: string;
+	title: string;
+	author: string;
 }
 
 const BookSchema = new Schema<Book>({
-  title: {
-    type: "string",
-    required: true,
-  },
-  author: {
-    type: "string",
-    required: true,
-  },
+	title: {
+		type: "string",
+		required: true,
+	},
+	author: {
+		type: "string",
+		required: true,
+	},
 });
 
 export const Book = model<Book>("Book", BookSchema);
