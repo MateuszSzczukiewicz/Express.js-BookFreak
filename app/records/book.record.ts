@@ -1,9 +1,9 @@
 import { Book } from "../db/models/book";
 import { Request, Response } from "express";
 import { ObjectId } from "mongoose";
-import { BookEntity } from "../types";
+import { BookEntity } from "../types/book/book.entity";
 
-export class BookActions implements BookEntity {
+export class BookRecord implements BookEntity {
 	public _id: ObjectId;
 	public title: string;
 	public author: string;

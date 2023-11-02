@@ -1,89 +1,87 @@
 import { Request, Response } from "express";
 import { Book } from "../app/db/models/book";
-import { BookActions } from "../app/actions/bookActions";
+import { BookActions } from "../app/records/book.record";
 
 describe("BookActions", () => {
-  beforeAll(async () => {});
+	beforeAll(async () => {});
 
-  afterEach(async () => {});
+	afterEach(async () => {});
 
-  describe("saveBook", () => {
-    it("should save a book", async () => {
-      const req = {
-        body: { title: "Test Book", author: "Test Author" },
-      } as Request;
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as unknown as Response;
+	describe("saveBook", () => {
+		it("should save a book", async () => {
+			const req = {
+				body: { title: "Test Book", author: "Test Author" },
+			} as Request;
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			} as unknown as Response;
 
-      await BookActions.saveBook(req, res);
+			await BookActions.saveBook(req, res);
 
-      expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith(
-        expect.objectContaining({ title: "Test Book", author: "Test Author" }),
-      );
-    });
+			expect(res.status).toHaveBeenCalledWith(201);
+			expect(res.json).toHaveBeenCalledWith(
+				expect.objectContaining({ title: "Test Book", author: "Test Author" }),
+			);
+		});
 
-    it("should handle saveBook errors", async () => {
-      const req = {
-        body: { title: "Test Book", author: "Test Author" },
-      } as Request;
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as unknown as Response;
+		it("should handle saveBook errors", async () => {
+			const req = {
+				body: { title: "Test Book", author: "Test Author" },
+			} as Request;
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			} as unknown as Response;
 
-      jest
-        .spyOn(Book.prototype, "save")
-        .mockRejectedValue(new Error("Test error"));
+			jest.spyOn(Book.prototype, "save").mockRejectedValue(new Error("Test error"));
 
-      await BookActions.saveBook(req, res);
+			await BookActions.saveBook(req, res);
 
-      expect(res.status).toHaveBeenCalledWith(422);
-      expect(res.json).toHaveBeenCalledWith({ message: "Test error" });
-    });
-  });
+			expect(res.status).toHaveBeenCalledWith(422);
+			expect(res.json).toHaveBeenCalledWith({ message: "Test error" });
+		});
+	});
 
-  describe("getAllBooks", () => {
-    it("should get all books", async () => {
-      const req = {} as Request;
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as unknown as Response;
+	describe("getAllBooks", () => {
+		it("should get all books", async () => {
+			const req = {} as Request;
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			} as unknown as Response;
 
-      jest.spyOn(Book, "find").mockResolvedValue([
-        { title: "Book 1", author: "Author 1" },
-        { title: "Book 2", author: "Author 2" },
-      ]);
+			jest.spyOn(Book, "find").mockResolvedValue([
+				{ title: "Book 1", author: "Author 1" },
+				{ title: "Book 2", author: "Author 2" },
+			]);
 
-      await BookActions.getAllBooks(req, res);
+			await BookActions.getAllBooks(req, res);
 
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          expect.objectContaining({ title: "Book 1", author: "Author 1" }),
-          expect.objectContaining({ title: "Book 2", author: "Author 2" }),
-        ]),
-      );
-    });
+			expect(res.status).toHaveBeenCalledWith(200);
+			expect(res.json).toHaveBeenCalledWith(
+				expect.arrayContaining([
+					expect.objectContaining({ title: "Book 1", author: "Author 1" }),
+					expect.objectContaining({ title: "Book 2", author: "Author 2" }),
+				]),
+			);
+		});
 
-    it("should handle getAllBooks errors", async () => {
-      const req = {} as Request;
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as unknown as Response;
+		it("should handle getAllBooks errors", async () => {
+			const req = {} as Request;
+			const res = {
+				status: jest.fn().mockReturnThis(),
+				json: jest.fn(),
+			} as unknown as Response;
 
-      jest.spyOn(Book, "find").mockRejectedValue(new Error("Test error"));
+			jest.spyOn(Book, "find").mockRejectedValue(new Error("Test error"));
 
-      await BookActions.getAllBooks(req, res);
+			await BookActions.getAllBooks(req, res);
 
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({
-        message: "Internal Server Error",
-      });
-    });
-  });
+			expect(res.status).toHaveBeenCalledWith(500);
+			expect(res.json).toHaveBeenCalledWith({
+				message: "Internal Server Error",
+			});
+		});
+	});
 });

@@ -1,11 +1,7 @@
 import { Schema, model } from "mongoose";
+import { BookType } from "../../types/book/book";
 
-interface Book {
-	title: string;
-	author: string;
-}
-
-const BookSchema = new Schema<Book>({
+const BookSchema = new Schema<BookType>({
 	title: {
 		type: "string",
 		required: true,
@@ -16,4 +12,4 @@ const BookSchema = new Schema<Book>({
 	},
 });
 
-export const Book = model<Book>("Book", BookSchema);
+export const Book = model<BookType>("Book", BookSchema);
