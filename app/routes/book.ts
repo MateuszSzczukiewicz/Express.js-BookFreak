@@ -1,11 +1,11 @@
 import express from "express";
-import { BookActions } from "../actions/bookActions";
+import { BookRecord } from "../records/book.record";
 
 export const bookRouter = express.Router();
 
 bookRouter
-  .get("/books", BookActions.getAllBooks)
-  .get("/books/:id", BookActions.getBook)
-  .post("/books", BookActions.saveBook)
-  .put("/books/:id", BookActions.updateBook)
-  .delete("/books/:id", BookActions.deleteBook);
+	.get("/books", BookRecord.getAllBooks)
+	.get("/books/:id", BookRecord.getBook)
+	.post("/books", BookRecord.saveBook)
+	.put("/books/:id", BookRecord.updateBook)
+	.delete("/books/:id", BookRecord.deleteBook);
