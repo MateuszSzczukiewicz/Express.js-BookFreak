@@ -1,7 +1,8 @@
 import { ObjectId } from "mongoose";
 
 export interface BookEntity {
-  _id: ObjectId;
-  title: string;
-  author: string;
+	_id: ObjectId;
+	title: string;
+	author: string;
+	bookImage: string | ArrayBuffer | null;
 }

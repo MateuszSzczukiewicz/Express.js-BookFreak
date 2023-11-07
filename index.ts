@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config({ path: ".env" });
+
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -8,7 +11,9 @@ import { bookRouter } from "./app/routes/book";
 import { userRouter } from "./app/routes/user";
 import { handleError } from "./app/utils/errors";
 import rateLimit from "express-rate-limit";
+// import passport from "./app/passport";
 
+// passport();
 const app = express();
 
 app.use(bodyParser.json());

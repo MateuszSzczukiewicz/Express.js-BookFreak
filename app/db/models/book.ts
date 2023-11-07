@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
-import { BookType } from "../../types/book/book";
 
-const BookSchema = new Schema<BookType>({
+const BookSchema = new Schema({
 	title: {
 		type: "string",
 		required: true,
@@ -10,6 +9,9 @@ const BookSchema = new Schema<BookType>({
 		type: "string",
 		required: true,
 	},
+	bookImage: {
+		type: "string",
+	},
 });
 
-export const Book = model<BookType>("Book", BookSchema);
+export const Book = model("Book", BookSchema);

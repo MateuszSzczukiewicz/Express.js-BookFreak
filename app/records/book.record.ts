@@ -7,12 +7,13 @@ export class BookRecord implements BookEntity {
 	public _id: ObjectId;
 	public title: string;
 	public author: string;
+	public bookImage: string;
 
 	static async saveBook(req: Request, res: Response) {
-		const { title, author } = req.body;
+		const { title, author, bookImage } = req.body;
 
 		try {
-			const book = new Book({ title, author });
+			const book = new Book({ title, author, bookImage });
 			await book.save();
 			res.status(201).json(book);
 		} catch (err) {
@@ -45,7 +46,7 @@ export class BookRecord implements BookEntity {
 
 	static async updateBook(req: Request, res: Response) {
 		const id = req.params.id;
-		const { title, author } = req.body;
+		const { title, author, bookImage } = req.body;
 
 		try {
 			const book = await Book.findOne({ _id: id });
@@ -54,6 +55,7 @@ export class BookRecord implements BookEntity {
 			} else {
 				book.title = title;
 				book.author = author;
+				book.bookImage = bookImage;
 				await book.save();
 				res.status(201).json(book);
 			}
