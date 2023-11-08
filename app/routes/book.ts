@@ -4,8 +4,8 @@ import { BookRecord } from "../records/book.record";
 export const bookRouter = express.Router();
 
 bookRouter
-	.get("/books", BookRecord.getAllBooks)
-	.get("/books/:id", BookRecord.getBook)
-	.post("/books", BookRecord.saveBook)
-	.put("/books/:id", BookRecord.updateBook)
-	.delete("/books/:id", BookRecord.deleteBook);
+	.post("/profile/:userId/books", BookRecord.saveBook)
+	.get("/profile/:userId/books", BookRecord.getAllBooks)
+	.get("/profile/:userId/books/:id", BookRecord.getBook)
+	.put("/profile/:userId/books/:id", BookRecord.updateBook)
+	.delete("/profile/:userId/books/:id", BookRecord.deleteBook);
