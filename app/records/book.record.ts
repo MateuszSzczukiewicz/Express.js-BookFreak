@@ -2,6 +2,7 @@ import { Book } from "../db/models/book";
 import { Request, Response } from "express";
 import { ObjectId } from "mongoose";
 import { BookEntity } from "../types/book/book.entity";
+import { User } from "../db/models/user";
 
 export class BookRecord implements BookEntity {
 	public _id: ObjectId;
@@ -10,20 +11,33 @@ export class BookRecord implements BookEntity {
 	public bookImage: string;
 
 	static async saveBook(req: Request, res: Response) {
+		const userId: string = req.params.userId;
 		const { title, author, bookImage } = req.body;
 
 		try {
-			const book = new Book({ title, author, bookImage });
+			const user = await User.findById(userId);
+			if (!user) {
+				res.status(404).json({ message: "User not found" });
+				return;
+			}
+
+			const book = new Book({ title, author, bookImage, user: userId });
 			await book.save();
+
+			user.books.push(book._id);
+			await user.save();
+
 			res.status(201).json(book);
 		} catch (err) {
-			res.status(422).json({ message: err.message });
+			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
 
 	static async getAllBooks(req: Request, res: Response) {
+		const userId = req.params.userId;
+
 		try {
-			const books = await Book.find({});
+			const books = await Book.find({ user: userId });
 			res.status(200).json(books);
 		} catch (err) {
 			res.status(500).json({ message: "Internal Server Error" });
@@ -31,9 +45,11 @@ export class BookRecord implements BookEntity {
 	}
 
 	static async getBook(req: Request, res: Response) {
-		const id = req.params.id;
+		const userId = req.params.userId;
+		const bookId = req.params.id;
+
 		try {
-			const book = await Book.findOne({ _id: id });
+			const book = await Book.findOne({ _id: bookId, user: userId });
 			if (!book) {
 				res.status(404).json({ message: "Book not found" });
 			} else {
@@ -45,33 +61,51 @@ export class BookRecord implements BookEntity {
 	}
 
 	static async updateBook(req: Request, res: Response) {
-		const id = req.params.id;
+		const userId = req.params.userId;
+		const bookId = req.params.id;
 		const { title, author, bookImage } = req.body;
 
 		try {
-			const book = await Book.findOne({ _id: id });
+			const book = await Book.findOne({ _id: bookId, user: userId });
 			if (!book) {
 				res.status(404).json({ message: "Book not found" });
-			} else {
-				book.title = title;
-				book.author = author;
-				book.bookImage = bookImage;
-				await book.save();
-				res.status(201).json(book);
+				return;
 			}
+
+			book.title = title;
+			book.author = author;
+			book.bookImage = bookImage;
+			await book.save();
+
+			res.status(201).json(book);
 		} catch (err) {
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
 
 	static async deleteBook(req: Request, res: Response) {
-		const id = req.params.id;
+		const userId = req.params.userId;
+		const bookId = req.params.id;
 
 		try {
-			const result = await Book.deleteOne({ _id: id });
+			const book = await Book.findOne({ _id: bookId, user: userId });
+			if (!book) {
+				res.status(404).json({ message: "Book not found" });
+				return;
+			}
+
+			const result = await Book.deleteOne({ _id: bookId, user: userId });
 			if (result.deletedCount === 0) {
 				res.status(404).json({ message: "Book not found" });
 			} else {
+				const user = await User.findById(userId);
+				if (user) {
+					user.books = user.books.filter(
+						(userBookId) => userBookId.toString() !== book._id.toString(),
+					);
+					await user.save();
+				}
+
 				res.sendStatus(204);
 			}
 		} catch (err) {

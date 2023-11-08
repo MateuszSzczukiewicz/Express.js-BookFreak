@@ -17,8 +17,8 @@ export class UserRecord implements UserEntity {
 			const user = new User({ username, password });
 			await user.save();
 			res.status(201).json(user);
-		} catch (e) {
-			res.status(422).json({ message: e.message });
+		} catch (err) {
+			res.status(422).json({ message: err.message });
 		}
 	}
 
@@ -29,6 +29,7 @@ export class UserRecord implements UserEntity {
 			const user = await User.findOne({ username, password });
 			if (!user) {
 				res.status(401).json({ message: "Invalid credentials" });
+				return;
 			}
 
 			const payload = { id: user._id };
@@ -38,10 +39,12 @@ export class UserRecord implements UserEntity {
 			const refreshTokenDocument = new RefreshToken({ userId: user._id, token: refreshToken });
 			await refreshTokenDocument.save();
 
-			res
-				.status(200)
-				.json({ token, refreshToken, user: { id: user._id, username: user.username } });
-		} catch (e) {
+			res.status(200).json({
+				token,
+				refreshToken,
+				user: { id: user._id, username: user.username },
+			});
+		} catch (err) {
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
@@ -79,7 +82,7 @@ export class UserRecord implements UserEntity {
 		try {
 			await RefreshToken.findOneAndDelete({ token: refreshToken });
 			res.sendStatus(204);
-		} catch (err: any) {
+		} catch (err) {
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
@@ -97,7 +100,7 @@ export class UserRecord implements UserEntity {
 				await user.save();
 				res.status(201).json(user);
 			}
-		} catch (err: any) {
+		} catch (err) {
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
@@ -112,7 +115,7 @@ export class UserRecord implements UserEntity {
 			} else {
 				res.sendStatus(204);
 			}
-		} catch (err: any) {
+		} catch (err) {
 			res.status(500).json({ message: "Internal Server Error" });
 		}
 	}
