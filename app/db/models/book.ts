@@ -12,6 +12,10 @@ const BookSchema = new Schema({
 	bookImage: {
 		type: "string",
 	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: "User",
+	},
 });
 
 export const Book = model("Book", BookSchema);

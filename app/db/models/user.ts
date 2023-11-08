@@ -10,6 +10,12 @@ const UserSchema = new Schema({
 		type: "string",
 		required: true,
 	},
+	books: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Book",
+		},
+	],
 });
 
 export const User = model("User", UserSchema);
