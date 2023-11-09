@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { BookShelvesEnum } from "../../types/book/book.enum";
 
 const BookSchema = new Schema({
 	title: {
@@ -15,6 +16,11 @@ const BookSchema = new Schema({
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: "User",
+	},
+	bookShelf: {
+		type: String,
+		enum: Object.values(BookShelvesEnum),
+		required: true,
 	},
 });
 
