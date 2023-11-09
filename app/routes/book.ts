@@ -8,4 +8,5 @@ bookRouter
 	.get("/profile/:userId/books", BookRecord.getAllBooks)
 	.get("/profile/:userId/books/:id", BookRecord.getBook)
 	.put("/profile/:userId/books/:id", BookRecord.updateBook)
+	.patch("/profile/:userId/books/:id", BookRecord.changeShelf)
 	.delete("/profile/:userId/books/:id", BookRecord.deleteBook);
