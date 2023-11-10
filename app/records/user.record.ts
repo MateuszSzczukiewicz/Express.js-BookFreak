@@ -1,9 +1,10 @@
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import { User } from "../db/models/user";
+import { RefreshToken } from "../db/models/refreshToken";
 import { Request, Response } from "express";
 import { ObjectId } from "mongoose";
 import { UserEntity } from "../types/user/user.entity";
-import jwt from "jsonwebtoken";
-import { RefreshToken } from "../db/models/refreshToken";
 
 export class UserRecord implements UserEntity {
 	public _id: ObjectId;
@@ -14,7 +15,8 @@ export class UserRecord implements UserEntity {
 		const { username, password } = req.body;
 
 		try {
-			const user = new User({ username, password });
+			const hashedPassword = await bcrypt.hash(password, 10);
+			const user = new User({ username, password: hashedPassword });
 			await user.save();
 			res.status(201).json(user);
 		} catch (err) {
@@ -26,8 +28,8 @@ export class UserRecord implements UserEntity {
 		const { username, password } = req.body;
 
 		try {
-			const user = await User.findOne({ username, password });
-			if (!user) {
+			const user = await User.findOne({ username });
+			if (!user || !(await bcrypt.compare(password, user.password))) {
 				res.status(401).json({ message: "Invalid credentials" });
 				return;
 			}
@@ -96,7 +98,7 @@ export class UserRecord implements UserEntity {
 			if (!user) {
 				res.status(404).json({ message: "User not found" });
 			} else {
-				user.password = password;
+				user.password = await bcrypt.hash(password, 10);
 				await user.save();
 				res.status(201).json(user);
 			}
