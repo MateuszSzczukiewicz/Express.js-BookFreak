@@ -1,6 +1,9 @@
 {
   "name": "bookfreak-backend",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "engines": {
+    "node": "20.x"
+  },
   "main": "index.ts",
   "author": "Mateusz Szczukiewicz <szcmat6277@gmail.com>",
   "license": "MIT",
