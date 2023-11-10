@@ -23,8 +23,8 @@
     "express-rate-limit": "^7.1.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.2",
-    "typescript": "^5.2.2",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
