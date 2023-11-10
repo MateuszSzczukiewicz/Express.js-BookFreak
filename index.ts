@@ -24,6 +24,4 @@ app.use(
 app.use("/", bookRouter);
 app.use("/", userRouter);
 
-app.use(handleError);
-
 module.exports = app;
