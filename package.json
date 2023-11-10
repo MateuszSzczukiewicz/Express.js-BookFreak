@@ -10,7 +10,6 @@
   "scripts": {
     "start": "ts-node index.ts",
     "dev": "tsnd index.ts",
-    "build": "tsc",
     "test": "jest"
   },
   "dependencies": {
