@@ -7,5 +7,9 @@ mongoose
 		console.log("Connected to MongoDB");
 	})
 	.catch((error) => {
-		console.error("Error connecting to MongoDB:", error);
+		if (error.name === "MongoServerError" && error.code === 8000) {
+			console.error("MongoDB authentication failed. Check your credentials.");
+		} else {
+			console.error("Error connecting to MongoDB:", error);
+		}
 	});
