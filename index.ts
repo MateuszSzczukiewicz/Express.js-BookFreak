@@ -11,6 +11,7 @@ import { userRouter } from "./app/routes/user";
 import { handleError } from "./app/utils/errors";
 import rateLimit from "express-rate-limit";
 const app = express();
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -26,4 +27,4 @@ app.use("/api/", userRouter);
 
 app.use(handleError);
 
-app.listen(process.env.PORT);
+app.listen(port);
