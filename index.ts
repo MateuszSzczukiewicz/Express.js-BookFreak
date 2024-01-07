@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import "./app/db/mongoose";
@@ -13,11 +13,18 @@ const app = express();
 app.use(
 	cors({
 		credentials: true,
-		origin: "*",
-		allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+		origin: ["*"],
+		allowedHeaders: ["*"],
+		methods: ["GET", "POST", "PUT", "DELETE"],
 		optionsSuccessStatus: 204,
 	}),
 );
+
+// Obsługa błędów CORS
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+	console.error(err);
+	res.status(500).json({ error: "Internal Server Error" });
+});
 
 app.get("/", (req, res) => {
 	res.send("Express on Vercel, CORS issue");
