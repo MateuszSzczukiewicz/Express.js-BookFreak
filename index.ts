@@ -14,10 +14,22 @@ const app = express();
 app.use(
 	cors({
 		credentials: true,
-		origin: "https://bookfreak.vercel.app",
+		origin: "*",
 		allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
 	}),
 );
+
+app.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+	res.header("Access-Control-Allow-Headers", "Content-Type");
+	next();
+});
+
+app.use((req, res, next) => {
+	res.header("Vary", "Origin");
+	next();
+});
 
 app.get("/", (req, res) => {
 	res.send("Express on Vercel, CORS issue");
