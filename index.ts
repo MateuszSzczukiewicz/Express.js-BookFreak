@@ -16,7 +16,11 @@ app.get("/", (req, res) => {
 });
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+	cors({
+		origin: "https://bookfreak.vercel.app",
+	}),
+);
 // app.use(
 // 	rateLimit({
 // 		windowMs: 5 * 60 * 1000,
