@@ -7,7 +7,6 @@
     "downlevelIteration": true,
     "module": "CommonJS",
     "lib" : ["es6"],
-    "outDir" : "dist",
     "alwaysStrict": true,
     "importHelpers": false,
     "experimentalDecorators": true,
