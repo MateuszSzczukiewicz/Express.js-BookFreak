@@ -12,8 +12,12 @@ import { handleError } from "./app/utils/errors";
 import rateLimit from "express-rate-limit";
 const app = express();
 
+app.get("/", (req, res) => {
+	res.send("Express on Vercel");
+});
+
 app.use(bodyParser.json());
-app.use(cors());
+// app.use(cors());
 app.use(
 	rateLimit({
 		windowMs: 5 * 60 * 1000,
@@ -24,6 +28,10 @@ app.use(
 app.use("/", bookRouter);
 app.use("/", userRouter);
 
-app.use(handleError);
+// app.use(handleError);
+
+app.listen(5000, () => {
+	console.log("Running on port 5000.");
+});
 
 module.exports = app;
