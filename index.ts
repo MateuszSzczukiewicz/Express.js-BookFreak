@@ -11,11 +11,6 @@ import { userRouter } from "./app/routes/user";
 // import rateLimit from "express-rate-limit";
 const app = express();
 
-app.get("/", (req, res) => {
-	res.send("Express on Vercel");
-});
-
-app.use(bodyParser.json());
 app.use(
 	cors({
 		credentials: true,
@@ -23,6 +18,12 @@ app.use(
 		allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
 	}),
 );
+
+app.get("/", (req, res) => {
+	res.send("Express on Vercel, CORS issue");
+});
+
+app.use(bodyParser.json());
 // app.use(
 // 	rateLimit({
 // 		windowMs: 5 * 60 * 1000,
