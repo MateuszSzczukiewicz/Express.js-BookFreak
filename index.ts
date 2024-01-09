@@ -12,9 +12,7 @@ const app = express();
 
 app.use(
 	cors({
-		credentials: true,
 		origin: "https://bookfreak.vercel.app",
-		allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
 	}),
 );
 
