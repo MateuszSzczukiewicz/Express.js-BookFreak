@@ -13,22 +13,10 @@ const app = express();
 app.use(
 	cors({
 		credentials: true,
-		origin: ["*"],
-		allowedHeaders: ["*"],
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		optionsSuccessStatus: 204,
+		origin: "https://bookfreak.vercel.app",
+		allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
 	}),
 );
-
-// Obsługa błędów CORS
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-	console.error(err);
-	res.status(500).json({ error: "Internal Server Error" });
-});
-
-app.get("/", (req, res) => {
-	res.send("Express on Vercel, CORS issue");
-});
 
 app.use(bodyParser.json());
 app.use("/", bookRouter);
