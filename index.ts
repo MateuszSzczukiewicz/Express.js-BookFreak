@@ -12,9 +12,14 @@ const app = express();
 
 app.use(
 	cors({
-		origin: "https://bookfreak.vercel.app/",
+		origin: "https://bookfreak.vercel.app",
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		credentials: true,
+		optionsSuccessStatus: 204,
 	}),
 );
+
+app.options("*", cors());
 
 app.use(bodyParser.json());
 app.use("/", bookRouter);
